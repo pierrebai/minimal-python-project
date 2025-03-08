@@ -34,11 +34,11 @@ jobs:
     - name: Test with unittest coverage
       run: |
         pipenv run python manager.py coverage tests
-        pipenv run python manager.py coverage report > coverage.txt
+        pipenv run python manager.py coverage report > unit-tests-coverage.txt
     - name: Update code coverage results found in coverage.txt
       run: |
         git config --global user.name "Pierre B"
         git config --global user.email "pierrebai@users.noreply.github.com"
-        git add coverage.txt
+        git add unit-tests-coverage.txt
         git commit -am "Update code coverage HTML results"
         git push
