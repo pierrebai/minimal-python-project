@@ -1,0 +1,47 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Run Python unit tests with coverage
+
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        cache: "pipenv"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install
+    #- name: Lint with flake8
+    #  run: |
+    #    # stop the build if there are Python syntax errors or undefined names
+    #    flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    #    # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+    #    flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with unittest coverage
+      run: |
+        pipenv run python manager.py coverage tests
+        pipenv run python manager.py coverage report > unit-tests-coverage.txt
+    - name: Update code coverage results found in coverage.txt
+      run: |
+        git config --global user.name "Pierre B"
+        git config --global user.email "pierrebai@users.noreply.github.com"
+        git add unit-tests-coverage.txt
+        if [ $(git status -u --porcelain) ]
+        then
+          git commit -am "Update code coverage HTML results"
+          git push
+        fi
