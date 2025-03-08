@@ -37,7 +37,7 @@ manager coverage report --html
 ```
 
 On github, the tests are run with coverage for each push. You can go see
-the [latest unit tests coverage results]](https://github.com/pierrebai/minimal-python-project/blob/main/unit-tests-coverage.txt).
+the [latest unit tests coverage results](https://github.com/pierrebai/minimal-python-project/blob/main/unit-tests-coverage.txt).
 
 
 # Update Package Requirements
